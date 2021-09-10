@@ -2,16 +2,20 @@ pragma solidity ^0.5.0;
 
 contract AssociateProfitSplitter {
     
+    // Creates 3 payable account variables
     address payable account_1;
     address payable account_2;
     address payable account_3;
     
+    // Input 3 addresses to deploy the contract
     constructor(address payable _one, address payable _two, address payable _three) public {
         account_1 = _one;
         account_2 = _two;
         account_3 = _three;
     }
     
+    // Takes in deposit, divides by 3 and transfers a share to each account
+    // Returns remaining balance to sender (1 or 2 wei)
     function deposit() public payable {
         uint amount = msg.value / 3;
         account_1.transfer(amount);
