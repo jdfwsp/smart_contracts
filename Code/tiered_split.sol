@@ -2,16 +2,20 @@ pragma solidity ^0.5.0;
 
 contract TieredProfitSplitter {
     
+    // Creates 3 payable account variables
     address payable account_1;
     address payable account_2;
     address payable account_3;
     
+    // Input 3 addresses to deploy the contract
     constructor(address payable _one, address payable _two, address payable _three) public {
         account_1 = _one;
         account_2 = _two;
         account_3 = _three;
     }
     
+    // Takes in deposity, divides by 100 and distributes proper amount of shares to each account
+    // Returns remaining balance to sender (1 or 2 wei)
     function deposit() public payable {
         uint amount = msg.value / 100;
         account_1.transfer(amount * 60);
@@ -20,6 +24,7 @@ contract TieredProfitSplitter {
         msg.sender.transfer(address(this).balance);
     }
     
+    // Allows you to verify contract is holding no balance
     function balance() public view returns(uint) {
         return address(this).balance;
     }

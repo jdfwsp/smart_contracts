@@ -2,25 +2,26 @@ pragma solidity ^0.5.0;
 
 contract DeferredEquityPlan {
     
+    // Creates addresses and other variables needed
     address human_resources;
+	address payable employee; 
 
-    address payable employee; 
     bool active = true; 
 
     uint public total_shares = 1000;
     uint public annual_distribution = 250;
-
+	uint public distributed_shares;
+	
     uint start_time = now; 
-    
     uint unlock_time = now + 365 days;
 
-    uint public distributed_shares; // starts at 0
-
+	// Input one employee address to deploy contract
     constructor(address payable _employee) public {
         human_resources = msg.sender;
         employee = _employee;
     }
 
+	// Distributes shares to employee based on how long the contract is active
     function distribute() public {
         require(msg.sender == human_resources || msg.sender == employee, "You are not authorized to execute this contract.");
         require(active == true, "Contract not active.");
@@ -37,6 +38,7 @@ contract DeferredEquityPlan {
         }
     }
 
+	// Allows HR or employee only to deactivate contract
     function deactivate() public {
         require(msg.sender == human_resources || msg.sender == employee, "You are not authorized to deactivate this contract.");
         active = false;
